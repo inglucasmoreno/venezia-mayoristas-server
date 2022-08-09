@@ -32,7 +32,6 @@ export class MayoristasController {
   }
 
   // Crear mayorista
-  @UseGuards(JwtAuthGuard)
   @Post('/')
   async crearMayorista(@Res() res, @Body() mayoristaDTO: MayoristasDTO ) {
 
@@ -52,7 +51,6 @@ export class MayoristasController {
       }
 
   // Actualizar mayorista
-  @UseGuards(JwtAuthGuard)
   @Put('/:id')
   async actualizarUsuario(@Res() res, @Body() mayoristaUpdateDTO: MayoristasUpdateDTO, @Param('id') mayoristaID ) {
 

@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { MayoristasUpdateDTO } from './dto/mayoristas-update.dto';
 import { MayoristasDTO } from './dto/mayoristas.dto';
 import { IMayoristas } from './interface/mayoristas.interface';
+import { transporter } from '../config/email.config';
 
 @Injectable()
 export class MayoristasService {
@@ -37,14 +38,25 @@ export class MayoristasService {
   // Crear mayorista
   async crearMayorista(mayoristaDTO: MayoristasDTO): Promise<IMayoristas> {
 
-      const { email, password } = mayoristaDTO;
+    const { email, password } = mayoristaDTO;
 
-      // Verificamos que el mayorista no esta repetido
-      let mayoristaDB = await this.getMayoristaPorEmail(email);
-      if(mayoristaDB) throw new NotFoundException('El email ya se registrado');
+    // Verificamos que el mayorista no esta repetido
+    let mayoristaDB = await this.getMayoristaPorEmail(email);
+    if(mayoristaDB) throw new NotFoundException('El email ya se registrado');
 
-      const nuevoMayorista = new this.mayoristasModel(mayoristaDTO);
-      return await nuevoMayorista.save();
+    await transporter.sendMail({
+        from: 'Activacion de cuenta <morenoluketi@gmail.com>',
+        to: email,
+        subject: 'Activando cuenta',
+        html: `
+            <b> Activando cuenta </b>
+        `
+    }).catch(()=>{
+        throw new NotFoundException('Error al enviar correo electrónico');
+    });
+
+    const nuevoMayorista = new this.mayoristasModel(mayoristaDTO);
+    return await nuevoMayorista.save();
 
   }
 
