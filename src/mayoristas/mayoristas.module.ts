@@ -7,6 +7,7 @@ import { mayoristasSchema } from './schema/mayoristas.schema';
 @Module({
   imports: [MongooseModule.forFeature([{name: 'Mayoristas', schema: mayoristasSchema}])],
   controllers: [MayoristasController],
-  providers: [MayoristasService]
+  providers: [MayoristasService],
+  exports: [MayoristasService]
 })
 export class MayoristasModule {}

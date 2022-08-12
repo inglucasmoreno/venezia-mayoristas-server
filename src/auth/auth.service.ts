@@ -1,58 +1,40 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsuariosService } from '../usuarios/usuarios.service';
-import { transporter } from '../config/email.config';
 import * as bcryptjs from 'bcryptjs';
+import { MayoristasService } from 'src/mayoristas/mayoristas.service';
 
 
 @Injectable()
 export class AuthService {
 
-    constructor(private usuarioService: UsuariosService,
-                private jwtService: JwtService,
-                private readonly logger: Logger
-                ){}
+    constructor(private mayoristasService: MayoristasService,
+                private jwtService: JwtService,){}
 
-    // Validar usuario
-    async validateUser(username: string, pass: string): Promise<any> {
-        const user = await this.usuarioService.getUsuarioPorNombre(username);
-        if(!user) throw new NotFoundException('Datos incorrectos'); // El usuario no coincide
-        const validPassword = bcryptjs.compareSync(pass, user.password);
-        if(user && validPassword){
-            const { password, ...result } = user;
+    // Validar mayorista
+    async validateMayorista(username: string, pass: string): Promise<any> {
+        const mayorista = await this.mayoristasService.getMayoristaPorEmail(username);
+        if(!mayorista) throw new NotFoundException('Datos incorrectos'); // El usuario no coincide
+        const validPassword = bcryptjs.compareSync(pass, mayorista.password);
+        if(mayorista && validPassword){
+            const { password, ...result } = mayorista;
             return result;
         }
         throw new NotFoundException('Datos incorrectos'); // EL password no coincide
     }
 
-    // Login
-    async login(user: any){
-        // this.logger.error('Probando Winston');
+    // Login - Mayoristas
+    async login(mayorista: any){
         const payload = {
-            userId: String(user._doc._id),
-            usuario: user._doc.usuario,
-            apellido: user._doc.apellido,
-            nombre: user._doc.nombre,
-            permisos: user._doc.permisos,
-            role: user._doc.role
+            mayoristaId: String(mayorista._doc._id),
+            email: mayorista._doc.email,
+            descripcion: mayorista._doc.descripcion,
+            confirm: mayorista._doc.confirm,
+            role: mayorista._doc.role,
+            activo: mayorista._doc.activo
         };
         return {
             token: this.jwtService.sign(payload)
         }
     }
-
-    // Envio de correo electronico
-    async sendEmail() {
-        await transporter.sendMail({
-            from: 'Activacion de cuenta <morenoluketi@gmail.com>',
-            to: 'besarad948@aregods.com',
-            subject: 'Activando cuenta',
-            html: `
-                <b> Activando cuenta </b>
-            `
-        });
-        return 'Todo correcto, todo en orden!!!';    
-    }
-
 
 }

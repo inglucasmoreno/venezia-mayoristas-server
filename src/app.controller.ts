@@ -21,19 +21,13 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async profile(@Req() req) {
+    
     // Generacion de token
     const token = this.jwtService.sign(req.user);
     return {
-      usuario: req.user,
+      mayorista: req.user,
       token: 'bearer ' + token
     };
   }
-
-  // Probando envio de correo electronico
-  @Get('auth/testing/correo')
-  async sendEmail(@Req() req){
-    return this.authService.sendEmail();
-  }
-
   
 }

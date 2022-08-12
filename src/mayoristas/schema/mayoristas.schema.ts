@@ -6,6 +6,7 @@ export const mayoristasSchema = new Schema({
     descripcion: {
         type: String,
         required: true,
+        uppercase: true,
         trim: true
     },
 
@@ -36,7 +37,7 @@ export const mayoristasSchema = new Schema({
 
     role: {
         type: String,
-        default: 'USER_ROLE',
+        default: 'ADMIN_ROLE',
         trim: true
     },
 

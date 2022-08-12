@@ -38,7 +38,7 @@ import { MayoristasModule } from './mayoristas/mayoristas.module';
     UsuariosModule, 
     AuthModule,
     InicializacionModule,
-    MayoristasModule,  // Para inicializacion de tablas - Configurable en el controlador/servicio
+    MayoristasModule,
     
   ],
   

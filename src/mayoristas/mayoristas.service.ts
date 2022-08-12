@@ -19,8 +19,8 @@ export class MayoristasService {
 
   // Mayorista por email
   async getMayoristaPorEmail(email: string): Promise<IMayoristas> {
-      const mayorista = await this.mayoristasModel.findOne({ email });
-      return mayorista;
+        const mayorista = await this.mayoristasModel.findOne({ email });
+        return mayorista;
   }  
 
   // Listar mayoristas
@@ -42,21 +42,25 @@ export class MayoristasService {
 
     // Verificamos que el mayorista no esta repetido
     let mayoristaDB = await this.getMayoristaPorEmail(email);
-    if(mayoristaDB) throw new NotFoundException('El email ya se registrado');
+    if(mayoristaDB) throw new NotFoundException('El email ya se encuentra registrado');
 
+    // Creacion de usuario
+    const nuevoMayorista = new this.mayoristasModel(mayoristaDTO);
+    const mayorista = await nuevoMayorista.save();
+    
+    // Envio de correo electronico de confirmacion
     await transporter.sendMail({
         from: 'Activacion de cuenta <morenoluketi@gmail.com>',
         to: email,
         subject: 'Activando cuenta',
         html: `
-            <b> Activando cuenta </b>
+        <a href='http://localhost:4200/confirm/${mayorista._id}' targe='_blank'> Activar cuenta </a>
         `
     }).catch(()=>{
         throw new NotFoundException('Error al enviar correo electrónico');
     });
 
-    const nuevoMayorista = new this.mayoristasModel(mayoristaDTO);
-    return await nuevoMayorista.save();
+    return mayorista;
 
   }
 
