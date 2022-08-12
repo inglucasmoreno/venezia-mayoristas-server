@@ -54,7 +54,7 @@ export class MayoristasService {
         to: email,
         subject: 'Activando cuenta',
         html: `
-        <a href='http://localhost:4200/confirm/${mayorista._id}' targe='_blank'> Activar cuenta </a>
+        <a href='http://localhost:4200/confirm/${mayorista._id}' target='_blank'> Activar cuenta </a>
         `
     }).catch(()=>{
         throw new NotFoundException('Error al enviar correo electrónico');
@@ -82,6 +82,23 @@ export class MayoristasService {
       const mayoristaRes = await this.mayoristasModel.findByIdAndUpdate(id, mayoristaUpdateDTO, {new: true});
       return mayoristaRes;
       
+  }
+
+  // Reenviar correo de confirmacion
+  async enviarCorreo(idMayorista, email): Promise<any> {
+
+    // Envio de correo electronico de confirmacion
+    await transporter.sendMail({
+        from: 'Activacion de cuenta <morenoluketi@gmail.com>',
+        to: email,
+        subject: 'Activando cuenta',
+        html: `
+            <a href='http://localhost:4200/confirm/${idMayorista}' target='_blank'> Activar cuenta </a>
+        `
+        }).catch(()=>{
+        throw new NotFoundException('Error al enviar correo electrónico');
+    });  
+
   }
 
 }

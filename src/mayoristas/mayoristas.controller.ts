@@ -9,64 +9,75 @@ import { MayoristasUpdateDTO } from './dto/mayoristas-update.dto';
 export class MayoristasController {
   constructor( private mayoristasService: MayoristasService ){}
 
-  // Mayorista por ID
-  @UseGuards(JwtAuthGuard)
-  @Get('/:id')
-  async getMayorista(@Res() res, @Param('id') mayoristaID) {
-      const mayorista = await this.mayoristasService.getMayorista(mayoristaID);
-      res.status(HttpStatus.OK).json({
-          message: 'Mayorista obtenido correctamente',
-          mayorista
-      });
-  }
+    // Mayorista por ID
+    @UseGuards(JwtAuthGuard)
+    @Get('/:id')
+    async getMayorista(@Res() res, @Param('id') mayoristaID) {
+        const mayorista = await this.mayoristasService.getMayorista(mayoristaID);
+        res.status(HttpStatus.OK).json({
+            message: 'Mayorista obtenido correctamente',
+            mayorista
+        });
+    }
 
-  // Listar mayoristas
-  @UseGuards(JwtAuthGuard)
-  @Get('/')
-  async listarMayoristas(@Res() res, @Query() querys) {
-      const mayoristas = await this.mayoristasService.listarMayoristas(querys);
-      res.status(HttpStatus.OK).json({
-          message: 'Listado de mayoristas correcto',
-          mayoristas
-      });
-  }
+    // Listar mayoristas
+    @UseGuards(JwtAuthGuard)
+    @Get('/')
+    async listarMayoristas(@Res() res, @Query() querys) {
+        const mayoristas = await this.mayoristasService.listarMayoristas(querys);
+        res.status(HttpStatus.OK).json({
+            message: 'Listado de mayoristas correcto',
+            mayoristas
+        });
+    }
 
-  // Crear mayorista
-  @Post('/')
-  async crearMayorista(@Res() res, @Body() mayoristaDTO: MayoristasDTO ) {
+    // Crear mayorista
+    @Post('/')
+    async crearMayorista(@Res() res, @Body() mayoristaDTO: MayoristasDTO ) {
 
-      const { password } = mayoristaDTO;
+        const { password } = mayoristaDTO;
 
-      // Se encripta el password
-      const salt = bcryptjs.genSaltSync();
-      mayoristaDTO.password = bcryptjs.hashSync(password, salt);
+        // Se encripta el password
+        const salt = bcryptjs.genSaltSync();
+        mayoristaDTO.password = bcryptjs.hashSync(password, salt);
 
-      // Se crea el mayorista
-      const mayoristaCreado = await this.mayoristasService.crearMayorista(mayoristaDTO);        
-      res.status(HttpStatus.CREATED).json({
-          message: 'Mayorista creado correctamente',
-          mayorista: mayoristaCreado
-      });
-  
-      }
+        // Se crea el mayorista
+        const mayoristaCreado = await this.mayoristasService.crearMayorista(mayoristaDTO);        
+        res.status(HttpStatus.CREATED).json({
+            message: 'Mayorista creado correctamente',
+            mayorista: mayoristaCreado
+        });
+    
+    }
 
-  // Actualizar mayorista
-  @Put('/:id')
-  async actualizarUsuario(@Res() res, @Body() mayoristaUpdateDTO: MayoristasUpdateDTO, @Param('id') mayoristaID ) {
+    // Enviar correo
+    @Post('/correo/confirmacion')
+    async enviarCorreo(@Res() res, @Body() data: any ) {
+        const { id, email } = data;
+        await this.mayoristasService.enviarCorreo(id, email);        
+        res.status(HttpStatus.CREATED).json({
+            message: 'Correo enviado correctamente',
+        });
+    }
 
-      const { password } = mayoristaUpdateDTO;
+    // Actualizar mayorista
+    @Put('/:id')
+    async actualizarUsuario(@Res() res, @Body() mayoristaUpdateDTO: MayoristasUpdateDTO, @Param('id') mayoristaID ) {
 
-      if(password){
-          const salt = bcryptjs.genSaltSync();
-          mayoristaUpdateDTO.password = bcryptjs.hashSync(password, salt);
-      }
+        const { password } = mayoristaUpdateDTO;
 
-      const mayorista = await this.mayoristasService.actualizarMayorista(mayoristaID, mayoristaUpdateDTO);
+        if(password){
+            const salt = bcryptjs.genSaltSync();
+            mayoristaUpdateDTO.password = bcryptjs.hashSync(password, salt);
+        }
 
-      res.status(HttpStatus.OK).json({
-          message: 'Mayorista actualizado correctamente',
-          mayorista
-      });
+        const mayorista = await this.mayoristasService.actualizarMayorista(mayoristaID, mayoristaUpdateDTO);
 
-  }
+        res.status(HttpStatus.OK).json({
+            message: 'Mayorista actualizado correctamente',
+            mayorista
+        });
+
+    }
+    
 }
