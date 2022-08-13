@@ -11,6 +11,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { MayoristasModule } from './mayoristas/mayoristas.module';
+import { VentasMayoristasProductosModule } from './ventas-mayoristas-productos/ventas-mayoristas-productos.module';
+import { VentasMayoristasModule } from './ventas-mayoristas/ventas-mayoristas.module';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import { MayoristasModule } from './mayoristas/mayoristas.module';
     AuthModule,
     InicializacionModule,
     MayoristasModule,
+    VentasMayoristasProductosModule,
+    VentasMayoristasModule,
     
   ],
   
