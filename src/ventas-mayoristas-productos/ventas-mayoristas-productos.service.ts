@@ -93,24 +93,28 @@ export class VentasMayoristasProductosService {
 // Listar productos
 async listarProductos(querys: any): Promise<IVentasMayoristasProductos[]> {
       
-    const {columna, direccion} = querys;
+    const {columna, direccion, pedido} = querys;
 
     const pipeline = [];
     pipeline.push({$match:{}});
 
+    // Filtrado por pedido
+    if(pedido && pedido !== ''){
+      const idPedido = new Types.ObjectId(pedido);
+      pipeline.push({ $match:{ ventas_mayorista: idPedido} }) 
+    }
 
-    // Informacion - Unidad de medida
+    // Informacion - Venta mayorista
     pipeline.push({
       $lookup: { // Lookup
           from: 'ventas_mayoristas',
-          localField: 'venta_mayorista',
+          localField: 'ventas_mayorista',
           foreignField: '_id',
-          as: 'venta_mayorista'
+          as: 'ventas_mayorista'
       }}
     );
 
-    pipeline.push({ $unwind: '$venta_mayorista' });
-
+    pipeline.push({ $unwind: '$ventas_mayorista' });
 
     // Informacion - Producto
     pipeline.push({
@@ -141,7 +145,7 @@ async listarProductos(querys: any): Promise<IVentasMayoristasProductos[]> {
     // Informacion de usuario creador
     pipeline.push({
       $lookup: { // Lookup
-          from: 'usuarios',
+          from: 'mayoristas',
           localField: 'creatorUser',
           foreignField: '_id',
           as: 'creatorUser'
@@ -153,7 +157,7 @@ async listarProductos(querys: any): Promise<IVentasMayoristasProductos[]> {
     // Informacion de usuario actualizador
     pipeline.push({
       $lookup: { // Lookup
-        from: 'usuarios',
+        from: 'mayoristas',
         localField: 'updatorUser',
         foreignField: '_id',
         as: 'updatorUser'

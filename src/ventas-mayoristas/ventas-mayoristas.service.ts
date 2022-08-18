@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { IVentasMayoristasProductos } from 'src/ventas-mayoristas-productos/interface/ventas-mayoristas-productos.interface';
-import { VentasMayoristasDTO } from './dto/ventas-mayoristas.dto';
 import { IVentasMayoristas } from './interface/ventas-mayoristas-interface';
 
 @Injectable()
@@ -90,7 +89,7 @@ async listarVentas(querys: any): Promise<IVentasMayoristas[]> {
     // Informacion de usuario creador
     pipeline.push({
       $lookup: { // Lookup
-          from: 'usuarios',
+          from: 'mayoristas',
           localField: 'creatorUser',
           foreignField: '_id',
           as: 'creatorUser'
@@ -102,7 +101,7 @@ async listarVentas(querys: any): Promise<IVentasMayoristas[]> {
     // Informacion de usuario actualizador
     pipeline.push({
       $lookup: { // Lookup
-        from: 'usuarios',
+        from: 'mayoristas',
         localField: 'updatorUser',
         foreignField: '_id',
         as: 'updatorUser'
