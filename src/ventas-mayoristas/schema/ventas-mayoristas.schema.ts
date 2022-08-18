@@ -9,16 +9,6 @@ export const ventasMayoristasSchema = new Schema({
       required: true,
     },
 
-    total_balanza: {
-      type: Number,
-      required: true,
-    },
-
-    total_no_balanza: {
-      type: Number,
-      required: true,
-    },
-
     precio_total: {
       type: Number,
       required: true,
@@ -41,7 +31,7 @@ export const ventasMayoristasSchema = new Schema({
 
     comprobante: {
         type: String,
-        required: true
+        default: 'Normal'
     },
 
     activo: {

@@ -22,11 +22,6 @@ export const ventasMayoristasProductosSchema = new Schema({
       trim: true
     },
 
-    balanza: {
-      type: Boolean,
-      required: true,
-    },
-
     precio: {
         type: Number,
         required: true

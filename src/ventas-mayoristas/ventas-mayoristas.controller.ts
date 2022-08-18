@@ -34,11 +34,10 @@ export class VentasMayoristasController {
   // Crear ventas
   @UseGuards(JwtAuthGuard)
   @Post('/')
-  async crearVentas(@Res() res, @Body() ventasDTO: VentasMayoristasDTO ) {
-      const venta = await this.ventasService.crearVenta(ventasDTO);        
+  async crearVentas(@Res() res, @Body() data: any ) {
+      await this.ventasService.crearVenta(data);        
       res.status(HttpStatus.CREATED).json({
           message: 'Venta creada correctamente',
-          venta
       });
   }
     

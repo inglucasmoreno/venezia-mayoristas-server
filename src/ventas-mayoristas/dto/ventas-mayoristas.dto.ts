@@ -6,17 +6,10 @@ export class VentasMayoristasDTO {
   readonly mayorista: string;
 
   @IsNotEmpty()
-  readonly total_balanza: number;
-
-  @IsNotEmpty()
-  readonly total_no_balanza: number;
-
-  @IsNotEmpty()
   readonly precio_total: number;
 
   readonly facturacion: any;
   
-  @IsNotEmpty()
   readonly comprobante: string;
   
   readonly activo: boolean;

@@ -5,8 +5,6 @@ export class VentasMayoristasProductosUpdateDTO {
   readonly producto: string;
 
   readonly descripcion: string;
-
-  readonly balanza: string;
   
   readonly precio: number;
 
