@@ -69,10 +69,16 @@ export class VentasMayoristasService {
 // Listar ventas
 async listarVentas(querys: any): Promise<IVentasMayoristas[]> {
       
-    const {columna, direccion} = querys;
+    const {columna, direccion, mayorista} = querys;
 
     const pipeline = [];
     pipeline.push({$match:{}});
+
+    // Mayorista por ID
+    if(mayorista && mayorista !== ''){
+      const idMayorista = new Types.ObjectId(mayorista);
+      pipeline.push({ $match:{ mayorista: idMayorista } }) 
+    }
 
     // Informacion - Mayorista
     pipeline.push({
