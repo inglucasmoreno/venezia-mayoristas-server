@@ -19,7 +19,7 @@ export class MayoristasService {
 
   // Mayorista por email
   async getMayoristaPorEmail(email: string): Promise<IMayoristas> {
-        const mayorista = await this.mayoristasModel.findOne({ email });
+        const mayorista = await this.mayoristasModel.findOne({ email, activo: true });
         return mayorista;
   }  
 
@@ -52,9 +52,10 @@ export class MayoristasService {
     await transporter.sendMail({
         from: 'Activacion de cuenta <morenoluketi@gmail.com>',
         to: email,
-        subject: 'Activando cuenta',
+        subject: 'Venezia panaderia',
         html: `
-        <a href='http://localhost:4200/confirm/${mayorista._id}' target='_blank'> Activar cuenta </a>
+        <p> ¡Muchas gracias por sumarte a nuestra plataforma!, a continuación te enviamos el link para la activación de tu cuenta. </p>
+        <a href='http://localhost:4200/confirm/${mayorista._id}' target='_blank'> Haga click aqui! </a>
         `
     }).catch(()=>{
         throw new NotFoundException('Error al enviar correo electrónico');
@@ -91,9 +92,10 @@ export class MayoristasService {
     await transporter.sendMail({
         from: 'Activacion de cuenta <morenoluketi@gmail.com>',
         to: email,
-        subject: 'Activando cuenta',
+        subject: 'Venezia panaderia',
         html: `
-            <a href='http://localhost:4200/confirm/${idMayorista}' target='_blank'> Activar cuenta </a>
+        <p> ¡Muchas gracias por sumarte a nuestra plataforma!, a continuación te enviamos el link para la activación de tu cuenta. </p>
+        <a href='http://localhost:4200/confirm/${idMayorista}' target='_blank'> Haga click aqui! </a>
         `
         }).catch(()=>{
         throw new NotFoundException('Error al enviar correo electrónico');

@@ -31,6 +31,7 @@ export const mayoristasSchema = new Schema({
     email: {
         type: String,
         unique: true,
+        required: true,
         lowercase: true,
         trim: true
     },
