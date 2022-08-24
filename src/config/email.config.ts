@@ -2,9 +2,11 @@
 import nodemailer = require('nodemailer');
 
 const email = {
-  user: 'morenoluketi@gmail.com',
-  password: 'suthpvpkabamdtxf'
+  user: 'panaderiaveneziasl@gmail.com',
+  password: 'xtailmcxquwbuxdf' 
 }
+
+console.log(email);
 
  // create reusable transporter object using the default SMTP transport
  export const transporter = nodemailer.createTransport({

@@ -55,7 +55,7 @@ export class MayoristasService {
         subject: 'Venezia panaderia',
         html: `
         <p> ¡Muchas gracias por sumarte a nuestra plataforma!, a continuación te enviamos el link para la activación de tu cuenta. </p>
-        <a href='http://localhost:4200/confirm/${mayorista._id}' target='_blank'> Haga click aqui! </a>
+        <a href='http://178.128.146.6:3001/confirm/${mayorista._id}' target='_blank'> Haga click aqui! </a>
         `
     }).catch(()=>{
         throw new NotFoundException('Error al enviar correo electrónico');
@@ -95,7 +95,7 @@ export class MayoristasService {
         subject: 'Venezia panaderia',
         html: `
         <p> ¡Muchas gracias por sumarte a nuestra plataforma!, a continuación te enviamos el link para la activación de tu cuenta. </p>
-        <a href='http://localhost:4200/confirm/${idMayorista}' target='_blank'> Haga click aqui! </a>
+        <a href='http://178.128.146.6:3001/confirm/${idMayorista}' target='_blank'> Haga click aqui! </a>
         `
         }).catch(()=>{
         throw new NotFoundException('Error al enviar correo electrónico');
