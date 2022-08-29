@@ -134,8 +134,20 @@ async listarVentas(querys: any): Promise<IVentasMayoristas[]> {
 
       const { pedido, productos } = data;
 
+      // Numero de pedido
+      const ultimoPedido = await this.ventasModel.find().sort({createdAt: -1}).limit(1);
+
+      console.log(ultimoPedido);
+
+      let numero = 0;
+
+      if(ultimoPedido.length === 0) numero = 1;
+      else numero = ultimoPedido[0].numero + 1;
+      
+      const dataPedido = {...pedido, numero};
+
       // Se crea el pedido
-      const nuevaVenta = new this.ventasModel(pedido);
+      const nuevaVenta = new this.ventasModel(dataPedido);
       const pedidoDB = await nuevaVenta.save();
       
       // Carga de productos

@@ -22,6 +22,11 @@ export const ventasMayoristasProductosSchema = new Schema({
       trim: true
     },
 
+    entregado: {
+        type: Boolean,
+        default: false
+    },
+
     precio: {
         type: Number,
         required: true
