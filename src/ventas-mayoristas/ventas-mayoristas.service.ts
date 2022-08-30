@@ -137,8 +137,6 @@ async listarVentas(querys: any): Promise<IVentasMayoristas[]> {
       // Numero de pedido
       const ultimoPedido = await this.ventasModel.find().sort({createdAt: -1}).limit(1);
 
-      console.log(ultimoPedido);
-
       let numero = 0;
 
       if(ultimoPedido.length === 0) numero = 1;
